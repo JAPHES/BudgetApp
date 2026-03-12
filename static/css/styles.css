@@ -1,0 +1,22 @@
+body {
+    background: #f6f7fb;
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+}
+
+.metric {
+    padding: 12px 8px;
+}
+
+.metric-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.metric-value {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
