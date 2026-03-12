@@ -1,10 +1,45 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="row g-4">
-    <div class="col-lg-5">
-        <div class="card shadow-sm">
+    <div class="col-12">
+        <div class="card hero-card shadow-sm">
+            <div class="row align-items-center g-3">
+                <div class="col-md-8">
+                    <p class="text-uppercase text-white-50 small fw-semibold mb-1">Budget dashboard</p>
+                    <h3 class="text-white mb-2">Stay on top of your 50/30/20 plan</h3>
+                    <p class="text-white-75 mb-0">Track salary, expenses, and allocations in one place. Everything here is private to you.</p>
+                </div>
+                {% if budget %}
+                <div class="col-md-4">
+                    <div class="hero-stats">
+                        <div>
+                            <span class="label">Salary</span>
+                            <span class="value">${{ budget.salary }}</span>
+                        </div>
+                        <div>
+                            <span class="label">Expenses</span>
+                            <span class="value text-warning">${{ budget.total_expenses }}</span>
+                        </div>
+                        <div>
+                            <span class="label">Remaining</span>
+                            <span class="value text-success">${{ budget.remaining_balance }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-1">
+    <div class="col-xl-4">
+        <div class="card shadow-sm h-100">
             <div class="card-body">
-                <h5 class="card-title mb-3">Budget Input</h5>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="card-title mb-0">Budget input</h5>
+                    <span class="badge bg-light text-dark">Private</span>
+                </div>
                 <form method="post" novalidate>
                     {% csrf_token %}
                     {% for field in form %}
@@ -16,77 +51,103 @@
                             {% endif %}
                         </div>
                     {% endfor %}
-                    <button class="btn btn-primary w-100" type="submit">Save Budget</button>
+                    <button class="btn btn-primary w-100" type="submit">Save budget</button>
                 </form>
             </div>
         </div>
     </div>
-    <div class="col-lg-7">
-        <div class="card shadow-sm mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Summary</h5>
-                {% if budget %}
-                    <div class="row text-center">
-                        <div class="col-md-4">
-                            <div class="metric">
-                                <div class="metric-label">Salary</div>
-                                <div class="metric-value">${{ budget.salary }}</div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="metric">
-                                <div class="metric-label">Total Expenses</div>
-                                <div class="metric-value text-danger">${{ budget.total_expenses }}</div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="metric">
-                                <div class="metric-label">Remaining</div>
-                                <div class="metric-value text-success">${{ budget.remaining_balance }}</div>
-                            </div>
-                        </div>
-                    </div>
-                {% else %}
-                    <p class="text-muted mb-0">Add your salary and expenses to see calculations.</p>
-                {% endif %}
+
+    <div class="col-xl-8">
+        <div class="row g-3 mb-3">
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <p class="label">Salary</p>
+                    <p class="value">${{ budget.salary|default_if_none:"0.00" }}</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <p class="label">Expenses</p>
+                    <p class="value text-warning">${{ budget.total_expenses|default_if_none:"0.00" }}</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <p class="label">Remaining</p>
+                    <p class="value text-success">${{ budget.remaining_balance|default_if_none:"0.00" }}</p>
+                </div>
             </div>
         </div>
-        <div class="card shadow-sm">
+
+        <div class="card shadow-sm mb-3">
             <div class="card-body">
-                <h5 class="card-title">Allocations</h5>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="card-title mb-0">Allocation</h5>
+                    <span class="text-muted small">50 / 30 / 20</span>
+                </div>
                 {% if allocation %}
-                    <div class="row">
-                        <div class="col-md-6">
+                    <div class="row g-3">
+                        <div class="col-lg-6">
+                            <div class="stacked-bar mb-3">
+                                <div class="stacked savings" style="width:20%;">Savings 20%</div>
+                                <div class="stacked needs" style="width:50%;">Needs 50%</div>
+                                <div class="stacked wants" style="width:30%;">Wants 30%</div>
+                            </div>
                             <table class="table table-sm align-middle">
                                 <thead>
                                 <tr><th>Category</th><th class="text-end">Amount</th></tr>
                                 </thead>
                                 <tbody>
-                                <tr><td>Savings (20%)</td><td class="text-end">${{ allocation.savings }}</td></tr>
-                                <tr><td>Needs (50%)</td><td class="text-end">${{ allocation.needs }}</td></tr>
-                                <tr><td>Wants (30%)</td><td class="text-end">${{ allocation.wants }}</td></tr>
+                                <tr><td>Savings</td><td class="text-end">${{ allocation.savings }}</td></tr>
+                                <tr><td>Needs</td><td class="text-end">${{ allocation.needs }}</td></tr>
+                                <tr><td>Wants</td><td class="text-end">${{ allocation.wants }}</td></tr>
                                 </tbody>
                             </table>
-                            <h6 class="mt-3">Needs breakdown</h6>
-                            <table class="table table-sm">
-                                {% for label, amount in allocation.needs_breakdown.items %}
-                                    <tr><td>{{ label }}</td><td class="text-end">${{ amount }}</td></tr>
-                                {% endfor %}
-                            </table>
-                            <h6 class="mt-3">Wants breakdown</h6>
-                            <table class="table table-sm">
-                                {% for label, amount in allocation.wants_breakdown.items %}
-                                    <tr><td>{{ label }}</td><td class="text-end">${{ amount }}</td></tr>
-                                {% endfor %}
-                            </table>
                         </div>
-                        <div class="col-md-6">
-                            <canvas id="allocationChart" height="260"></canvas>
+                        <div class="col-lg-6">
+                            <canvas id="allocationChart" height="240"></canvas>
                         </div>
                     </div>
                 {% else %}
-                    <p class="text-muted mb-0">No data yet. Save your budget to view allocations.</p>
+                    <p class="text-muted mb-0">Enter salary and expenses to see your allocations.</p>
                 {% endif %}
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <h6 class="fw-semibold">Needs breakdown</h6>
+                        {% if allocation %}
+                        <ul class="list-group list-group-flush breakdown-list">
+                            {% for label, amount in allocation.needs_breakdown.items %}
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>{{ label }}</span>
+                                    <span class="fw-semibold">${{ amount }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                            <p class="text-muted mb-0">Save your budget to view this breakdown.</p>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="fw-semibold">Wants breakdown</h6>
+                        {% if allocation %}
+                        <ul class="list-group list-group-flush breakdown-list">
+                            {% for label, amount in allocation.wants_breakdown.items %}
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>{{ label }}</span>
+                                    <span class="fw-semibold">${{ amount }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                            <p class="text-muted mb-0">Save your budget to view this breakdown.</p>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>

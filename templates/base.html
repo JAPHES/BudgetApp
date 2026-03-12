@@ -9,36 +9,41 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container">
-        <a class="navbar-brand" href="{% url 'dashboard' %}">BudgetApp</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample07"
-                aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarsExample07">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a></li>
-            </ul>
-            <ul class="navbar-nav ms-auto">
-                {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <span class="navbar-text me-2">Hi {{ user.username }}</span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                    </li>
-                {% else %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
-                {% endif %}
-            </ul>
+<div class="layout">
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <span class="logo-dot"></span>
+            <span>BudgetApp</span>
         </div>
-    </div>
-    </nav>
-
-<main class="py-4">
-    <div class="container">
+        <div class="sidebar-user">
+            {% if user.is_authenticated %}
+                <div class="avatar">{{ user.username|first|upper }}</div>
+                <div>
+                    <div class="fw-semibold">{{ user.username }}</div>
+                    <div class="text-white-50 small">Personal budget</div>
+                </div>
+            {% else %}
+                <div class="avatar">?</div>
+                <div>
+                    <div class="fw-semibold">Guest</div>
+                    <div class="text-white-50 small">Sign in to save</div>
+                </div>
+            {% endif %}
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="{% url 'dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Dashboard</a></li>
+            {% if not user.is_authenticated %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+            {% else %}
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% endif %}
+        </ul>
+        <div class="sidebar-foot text-white-50 small">
+            Track salary, expenses, and 50/30/20 allocations.
+        </div>
+    </aside>
+    <main class="content">
         {% for message in messages %}
             <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
                 {{ message }}
@@ -46,8 +51,8 @@
             </div>
         {% endfor %}
         {% block content %}{% endblock %}
-    </div>
-</main>
+    </main>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

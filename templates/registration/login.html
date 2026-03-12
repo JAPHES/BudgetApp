@@ -1,23 +1,47 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-5">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h4 class="mb-3 text-center">Login</h4>
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label class="form-label">Username</label>
-                        <input type="text" name="username" class="form-control" required autocomplete="username">
+    <div class="col-xl-10 col-xxl-9">
+        <div class="card auth-card shadow">
+            <div class="row g-0 align-items-stretch">
+                <div class="col-lg-5">
+                    <div class="auth-hero h-100"
+                         style="background-image: linear-gradient(135deg, rgba(13,110,253,.6), rgba(25,135,84,.65)), url('https://images.unsplash.com/photo-1454165205744-3b78555e5572?auto=format&fit=crop&w=1200&q=80');">
+                        <div class="auth-hero-content">
+                            <h3 class="text-white fw-semibold mb-2">Welcome back</h3>
+                            <p class="text-white-50 mb-3">Jump into your BudgetApp dashboard to update expenses and keep your 50/30/20 plan on track.</p>
+                            <ul class="text-white-75 small ps-3">
+                                <li>Private budgets per user</li>
+                                <li>Instant allocation insight</li>
+                                <li>Mobile-friendly layout</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Password</label>
-                        <input type="password" name="password" class="form-control" required autocomplete="current-password">
+                </div>
+                <div class="col-lg-7">
+                    <div class="card-body p-4 p-xl-5">
+                        <div class="text-center mb-4">
+                            <div class="auth-badge">BudgetApp</div>
+                            <h4 class="fw-semibold mb-1">Sign in</h4>
+                            <p class="text-muted mb-0">Securely access your budgeting workspace.</p>
+                        </div>
+                        <form method="post" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label class="form-label">Username</label>
+                                <input type="text" name="username" class="form-control form-control-lg" required autocomplete="username" placeholder="e.g. alex">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Password</label>
+                                <input type="password" name="password" class="form-control form-control-lg" required autocomplete="current-password" placeholder="••••••••">
+                            </div>
+                            <button class="btn btn-primary w-100 btn-lg mb-3" type="submit">Login</button>
+                        </form>
+                        <p class="text-center text-muted mb-0">New to BudgetApp?
+                            <a href="{% url 'register' %}" class="fw-semibold">Create an account</a>
+                        </p>
                     </div>
-                    <button class="btn btn-primary w-100" type="submit">Login</button>
-                </form>
-                <p class="mt-3 mb-0 text-center">No account? <a href="{% url 'register' %}">Register</a></p>
+                </div>
             </div>
         </div>
     </div>
