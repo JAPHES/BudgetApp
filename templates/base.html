@@ -32,6 +32,8 @@
         </div>
         <ul class="sidebar-nav">
             <li><a href="{% url 'dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Dashboard</a></li>
+            <li><a href="{% url 'history' %}" class="{% if request.resolver_match.url_name == 'history' %}active{% endif %}">History</a></li>
+            <li><a href="{% url 'profile' %}" class="{% if request.resolver_match.url_name == 'profile' %}active{% endif %}">Profile</a></li>
             {% if not user.is_authenticated %}
                 <li><a href="{% url 'login' %}">Login</a></li>
                 <li><a href="{% url 'register' %}">Register</a></li>

@@ -12,10 +12,16 @@ BudgetApp is a Django 5 project that lets each user record their salary and expe
   - Needs breakdown (Rent, Fare, Utilities, Debt, Groceries, Personal care, Gas)
   - Wants breakdown (Eating Out, Entertainment, New Clothing)
 - Dashboard with:
-  - Input form
+  - Input form + savings goal
   - Summary tiles and stacked 50/30/20 bar
   - Doughnut chart (Chart.js) for allocations
-  - Needs/Wants breakdown lists
+  - Needs/Wants breakdown lists and stacked bar chart for custom categories
+  - Savings goal progress, recent history, monthly trends line chart
+- Historical budgets (each save is a record) + history page
+- Custom needs/wants categories per budget
+- Exports: CSV and PDF (PDF via reportlab)
+- Profile page (email, currency, default savings goal)
+- Alerts when expenses exceed salary or category totals exceed 100%
 - Responsive Bootstrap UI, sidebar navigation, custom CSS/JS
 
 ## Stack
